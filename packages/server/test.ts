@@ -6,7 +6,7 @@ const Query = queryType({
   definition(t) {
     t.string('hello', {
       args: { name: stringArg() },
-      resolve: (parent, { name }) => `Hello ${name || 'World'}!`,
+      resolve: (_parent, { name }) => `Hello ${name || 'World'}!`,
     })
   },
 })
