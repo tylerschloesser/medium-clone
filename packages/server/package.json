@@ -1,8 +1,9 @@
 {
-  "name": "@medium-clone",
+  "name": "@medium-clone/server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,13 +17,5 @@
   "bugs": {
     "url": "https://github.com/tylerschloesser/medium-clone/issues"
   },
-  "homepage": "https://github.com/tylerschloesser/medium-clone#readme",
-  "dependencies": {
-    "ts-node": "^10.4.0",
-    "typescript": "^4.4.4"
-  },
-  "workspaces": [
-    "packages/shared",
-    "packages/server"
-  ]
+  "homepage": "https://github.com/tylerschloesser/medium-clone#readme"
 }
