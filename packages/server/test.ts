@@ -1,6 +1,7 @@
+import cors from 'cors'
 import express from 'express'
-import { queryType, stringArg, makeSchema } from 'nexus'
 import { graphqlHTTP } from 'express-graphql'
+import { makeSchema, queryType, stringArg } from 'nexus'
 
 const Query = queryType({
   definition(t) {
@@ -20,6 +21,7 @@ const schema = makeSchema({
 })
 
 const app = express()
+app.use(cors())
 app.use(
   '/graphql',
   graphqlHTTP({
