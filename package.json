@@ -24,7 +24,8 @@
   },
   "workspaces": [
     "packages/shared",
-    "packages/server"
+    "packages/server",
+    "packages/webapp"
   ],
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.3.0",
