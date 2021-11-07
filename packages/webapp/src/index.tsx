@@ -16,7 +16,7 @@ const TEST_QUERY = gql`
 `
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000',
+  uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache(),
 })
 
@@ -24,7 +24,7 @@ const root = document.getElementById('root')!
 
 const App = () => {
   const { data } = useQuery(TEST_QUERY)
-  return <h1>data: {data}</h1>
+  return <h1>data: {JSON.stringify(data)}</h1>
 }
 
 ReactDom.render(
