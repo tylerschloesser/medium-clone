@@ -3,7 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 
 const config: webpack.Configuration = {
   mode: 'development',
-  entry: './src/index.ts',
+  entry: './src/index.tsx',
   devtool: 'eval-source-map',
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
