@@ -31,6 +31,7 @@ export interface NexusGenObjects {
   Post: { // root type
     author?: string | null; // String
     id?: string | null; // ID
+    image?: string | null; // String
     title?: string | null; // String
   }
   Query: {};
@@ -50,6 +51,7 @@ export interface NexusGenFieldTypes {
   Post: { // field return type
     author: string | null; // String
     id: string | null; // ID
+    image: string | null; // String
     title: string | null; // String
   }
   Query: { // field return type
@@ -62,6 +64,7 @@ export interface NexusGenFieldTypeNames {
   Post: { // field return type name
     author: 'String'
     id: 'ID'
+    image: 'String'
     title: 'String'
   }
   Query: { // field return type name

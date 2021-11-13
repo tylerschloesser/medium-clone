@@ -5,6 +5,7 @@
 type Post {
   author: String
   id: ID
+  image: String
   title: String
 }
 
