@@ -27,6 +27,12 @@ const POSTS_QUERY = gql`
   }
 `
 
+interface Post {
+  id: string
+  title: string
+  author: string
+}
+
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql',
   cache: new InMemoryCache(),
@@ -35,10 +41,20 @@ const client = new ApolloClient({
 const root = document.getElementById('root')!
 
 const App = () => {
-  const { data } = useQuery(POSTS_QUERY)
+  const { data } = useQuery<{ posts: Post[] }>(POSTS_QUERY)
   return (
     <>
-      <h1>data: {JSON.stringify(data)}</h1>
+      <div className="container mx-auto">
+        {data &&
+          data.posts.map((post) => (
+            <div key={post.id} className="flex">
+              <div className="flex">
+                <h2>{post.title}</h2>
+                <div>{post.author}</div>
+              </div>
+            </div>
+          ))}
+      </div>
       <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
         <div className="flex-shrink-0">
           <img className="h-12 w-12" src="/img/logo.svg" alt="ChitChat Logo" />
