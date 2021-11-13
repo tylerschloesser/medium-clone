@@ -47,17 +47,19 @@ interface PostContainerProps {
 
 const PostContainer = ({ post }: PostContainerProps) => {
   return (
-    <Link to={`/post/${post.id}`}>
-      <div className="flex justify-between">
-        <div className="flex flex-col">
-          <div className="font-semibold text-xs">
-            {post.author}{' '}
-            <span className="text-gray-600 font-light">&middot; Nov 13</span>
-          </div>
-          <h2 className="mt-2 text-2xl font-bold">{post.title}</h2>
+    <Link to={`/post/${post.id}`} className="flex justify-between">
+      <div className="flex flex-col">
+        <div className="font-semibold text-xs">
+          {post.author}{' '}
+          <span className="text-gray-600 font-light">&middot; Nov 13</span>
         </div>
-        <img src={post.image} alt="" />
+        <h2 className="mt-2 text-2xl font-bold">{post.title}</h2>
       </div>
+      <img
+        className="h-24 md:h-auto w-24 md:w-auto object-cover"
+        src={post.image}
+        alt=""
+      />
     </Link>
   )
 }
@@ -84,7 +86,7 @@ const PostsContainer = () => {
 
 const App = () => {
   return (
-    <div className="container mx-auto p-8">
+    <div className="container mx-auto p-4 sm:p-8">
       <div className="flex">
         <div className="flex-2">
           <PostsContainer />
