@@ -86,10 +86,10 @@ const App = () => {
   return (
     <div className="container mx-auto p-8">
       <div className="flex">
-        <div className="flex-2 mr-8">
+        <div className="flex-2">
           <PostsContainer />
         </div>
-        <div className="flex-1">
+        <div className="flex-1 hidden md:block md:ml-8">
           <div className="p-6 rounded-md bg-blue-200">
             <div className="font-light uppercase text-sm">Hey There 👋</div>
             <div className="mt-4">Welcome to my medium clone!</div>
