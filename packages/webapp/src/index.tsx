@@ -56,11 +56,17 @@ const PostsContainer = () => {
                   &middot; Nov 13
                 </span>
               </div>
-              <h2 className="text-2xl font-bold">{post.title}</h2>
+              <h2 className="mt-2 text-2xl font-bold">{post.title}</h2>
             </div>
             <img src={post.image} alt="" />
           </div>
         ))}
+      <div className="mt-8 p-4 text-center rounded-md bg-gray-200">
+        You've got ideas, set them free.{' '}
+        <button className="ml-2 py-2 px-4 bg-black text-white text-sm rounded-full">
+          Write on Medium
+        </button>
+      </div>
     </div>
   )
 }
