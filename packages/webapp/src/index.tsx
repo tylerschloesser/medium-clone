@@ -48,7 +48,7 @@ const PostsContainer = () => {
     <div className="flex flex-col">
       {data &&
         data.posts.map((post) => (
-          <div key={post.id} className="m-8 flex justify-between">
+          <div key={post.id} className="mt-8 flex justify-between">
             <div className="flex flex-col">
               <h2>{post.title}</h2>
               <div>{post.author}</div>
@@ -64,10 +64,15 @@ const App = () => {
   return (
     <div className="container mx-auto">
       <div className="flex">
-        <div className="flex-2">
+        <div className="flex-2 mr-8">
           <PostsContainer />
         </div>
-        <div className="flex-1">the right!</div>
+        <div className="flex-1">
+          <div className="mt-8 p-6 rounded-md bg-blue-200">
+            <div className="font-light uppercase text-sm">Hey There 👋</div>
+            <div className="mt-4">Welcome to my medium clone!</div>
+          </div>
+        </div>
       </div>
     </div>
   )
