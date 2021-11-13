@@ -45,7 +45,7 @@ const root = document.getElementById('root')!
 const PostsContainer = () => {
   const { data } = useQuery<{ posts: Post[] }>(POSTS_QUERY)
   return (
-    <>
+    <div className="flex flex-col">
       {data &&
         data.posts.map((post) => (
           <div key={post.id} className="m-8 flex justify-between">
@@ -56,14 +56,19 @@ const PostsContainer = () => {
             <img src={post.image} alt="" />
           </div>
         ))}
-    </>
+    </div>
   )
 }
 
 const App = () => {
   return (
     <div className="container mx-auto">
-      <PostsContainer />
+      <div className="flex">
+        <div className="flex-2">
+          <PostsContainer />
+        </div>
+        <div className="flex-1">the right!</div>
+      </div>
     </div>
   )
 }
