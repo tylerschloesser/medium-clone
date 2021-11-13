@@ -10,6 +10,7 @@ import {
   InMemoryCache,
   useQuery,
 } from '@apollo/client'
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 
 const TEST_QUERY = gql`
   query {
@@ -48,16 +49,18 @@ interface PostContainerProps {
 
 const PostContainer = ({ post }: PostContainerProps) => {
   return (
-    <div className="mt-8 flex justify-between">
-      <div className="flex flex-col">
-        <div className="font-semibold text-xs">
-          {post.author}{' '}
-          <span className="text-gray-600 font-light">&middot; Nov 13</span>
+    <Link to={`/post/${post.id}`}>
+      <div className="flex justify-between">
+        <div className="flex flex-col">
+          <div className="font-semibold text-xs">
+            {post.author}{' '}
+            <span className="text-gray-600 font-light">&middot; Nov 13</span>
+          </div>
+          <h2 className="mt-2 text-2xl font-bold">{post.title}</h2>
         </div>
-        <h2 className="mt-2 text-2xl font-bold">{post.title}</h2>
+        <img src={post.image} alt="" />
       </div>
-      <img src={post.image} alt="" />
-    </div>
+    </Link>
   )
 }
 
@@ -66,7 +69,11 @@ const PostsContainer = () => {
   return (
     <div className="flex flex-col">
       {data &&
-        data.posts.map((post) => <PostContainer key={post.id} post={post} />)}
+        data.posts.map((post) => (
+          <div key={post.id} className="mt-8">
+            <PostContainer post={post} />
+          </div>
+        ))}
       <div className="mt-8 p-4 text-center rounded-md bg-gray-200">
         You've got ideas, set them free.{' '}
         <button className="ml-2 py-2 px-4 bg-black text-white text-sm rounded-full">
@@ -98,7 +105,12 @@ const App = () => {
 ReactDom.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/post/:id" element={<App />} />
+        </Routes>
+      </BrowserRouter>
     </ApolloProvider>
   </React.StrictMode>,
   root,

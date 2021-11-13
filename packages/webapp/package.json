@@ -35,5 +35,9 @@
   "bugs": {
     "url": "https://github.com/tylerschloesser/medium-clone/issues"
   },
-  "homepage": "https://github.com/tylerschloesser/medium-clone#readme"
+  "homepage": "https://github.com/tylerschloesser/medium-clone#readme",
+  "dependencies": {
+    "history": "^5.1.0",
+    "react-router-dom": "^6.0.2"
+  }
 }
