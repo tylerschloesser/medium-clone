@@ -1,7 +1,7 @@
 import cors from 'cors'
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
-import { makeSchema, objectType, queryType, stringArg } from 'nexus'
+import { list, makeSchema, objectType, queryType, stringArg } from 'nexus'
 
 const Post = objectType({
   name: 'Post',
@@ -12,11 +12,26 @@ const Post = objectType({
   },
 })
 
+const TEST_POSTS = [
+  {
+    title: 'The quick brow fox',
+    author: 'Tyler Schloesser',
+  },
+  {
+    title: 'My Struggle',
+    author: 'Bill Clinton',
+  },
+].map((p, i) => ({ id: `test-${i}`, ...p }))
+
 const Query = queryType({
   definition(t) {
     t.string('hello', {
       args: { name: stringArg() },
       resolve: (_parent, { name }) => `Hello ${name || 'World'}!`,
+    })
+    t.field('posts', {
+      type: list(Post),
+      resolve: () => TEST_POSTS,
     })
   },
 })

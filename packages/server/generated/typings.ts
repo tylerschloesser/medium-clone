@@ -28,6 +28,11 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Post: { // root type
+    author?: string | null; // String
+    id?: string | null; // ID
+    title?: string | null; // String
+  }
   Query: {};
 }
 
@@ -42,14 +47,26 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Post: { // field return type
+    author: string | null; // String
+    id: string | null; // ID
+    title: string | null; // String
+  }
   Query: { // field return type
     hello: string | null; // String
+    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
   }
 }
 
 export interface NexusGenFieldTypeNames {
+  Post: { // field return type name
+    author: 'String'
+    id: 'ID'
+    title: 'String'
+  }
   Query: { // field return type name
     hello: 'String'
+    posts: 'Post'
   }
 }
 

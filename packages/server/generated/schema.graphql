@@ -2,6 +2,13 @@
 ### Do not make changes to this file directly
 
 
+type Post {
+  author: String
+  id: ID
+  title: String
+}
+
 type Query {
   hello(name: String): String
+  posts: [Post]
 }
