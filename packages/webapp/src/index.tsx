@@ -23,6 +23,7 @@ const POSTS_QUERY = gql`
       id
       title
       author
+      image
     }
   }
 `
@@ -31,6 +32,7 @@ interface Post {
   id: string
   title: string
   author: string
+  image: string
 }
 
 const client = new ApolloClient({
@@ -40,31 +42,29 @@ const client = new ApolloClient({
 
 const root = document.getElementById('root')!
 
-const App = () => {
+const PostsContainer = () => {
   const { data } = useQuery<{ posts: Post[] }>(POSTS_QUERY)
   return (
     <>
-      <div className="container mx-auto">
-        {data &&
-          data.posts.map((post) => (
-            <div key={post.id} className="flex">
-              <div className="flex">
-                <h2>{post.title}</h2>
-                <div>{post.author}</div>
-              </div>
+      {data &&
+        data.posts.map((post) => (
+          <div key={post.id} className="m-8 flex justify-between">
+            <div className="flex flex-col">
+              <h2>{post.title}</h2>
+              <div>{post.author}</div>
             </div>
-          ))}
-      </div>
-      <div className="p-6 max-w-sm mx-auto bg-white rounded-xl shadow-md flex items-center space-x-4">
-        <div className="flex-shrink-0">
-          <img className="h-12 w-12" src="/img/logo.svg" alt="ChitChat Logo" />
-        </div>
-        <div>
-          <div className="text-xl font-medium text-black">ChitChat</div>
-          <p className="text-gray-500">You have a new message!</p>
-        </div>
-      </div>
+            <img src={post.image} alt="" />
+          </div>
+        ))}
     </>
+  )
+}
+
+const App = () => {
+  return (
+    <div className="container mx-auto">
+      <PostsContainer />
+    </div>
   )
 }
 
