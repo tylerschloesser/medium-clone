@@ -1,7 +1,16 @@
 import cors from 'cors'
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
-import { makeSchema, queryType, stringArg } from 'nexus'
+import { makeSchema, queryType, stringArg, interfaceType } from 'nexus'
+
+const Post = interfaceType({
+  name: 'Post',
+  definition(t) {
+    t.id('id')
+    t.string('title')
+    t.string('author')
+  },
+})
 
 const Query = queryType({
   definition(t) {
