@@ -50,8 +50,13 @@ const PostsContainer = () => {
         data.posts.map((post) => (
           <div key={post.id} className="mt-8 flex justify-between">
             <div className="flex flex-col">
-              <h2>{post.title}</h2>
-              <div>{post.author}</div>
+              <div className="font-semibold text-xs">
+                {post.author}{' '}
+                <span className="text-gray-600 font-light">
+                  &middot; Nov 13
+                </span>
+              </div>
+              <h2 className="text-2xl font-bold">{post.title}</h2>
             </div>
             <img src={post.image} alt="" />
           </div>
