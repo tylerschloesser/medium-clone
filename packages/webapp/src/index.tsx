@@ -1,8 +1,3 @@
-import React from 'react'
-import ReactDom from 'react-dom'
-
-import 'tailwindcss/tailwind.css'
-
 import {
   ApolloClient,
   ApolloProvider,
@@ -10,7 +5,10 @@ import {
   InMemoryCache,
   useQuery,
 } from '@apollo/client'
+import React from 'react'
+import ReactDom from 'react-dom'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+import 'tailwindcss/tailwind.css'
 
 const TEST_QUERY = gql`
   query {

@@ -8,6 +8,9 @@ const config: webpack.Configuration = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
+  output: {
+    publicPath: '/',
+  },
   stats: 'minimal',
   module: {
     rules: [
@@ -28,6 +31,9 @@ const config: webpack.Configuration = {
       hash: true,
     }),
   ],
+  devServer: {
+    historyApiFallback: true,
+  },
 }
 
 module.exports = config
