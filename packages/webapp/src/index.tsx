@@ -93,7 +93,7 @@ const PostsContainer = () => {
   )
 }
 
-const App = () => {
+const Home = () => {
   return (
     <div className="container mx-auto p-4 sm:p-8">
       <div className="flex">
@@ -116,9 +116,9 @@ ReactDom.render(
     <ApolloProvider client={client}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
+          <Route path="/" element={<Home />} />
           <Route path="/post/new" element={<NewPostContainer />} />
-          <Route path="/post/:id" element={<App />} />
+          <Route path="/post/:id" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>
