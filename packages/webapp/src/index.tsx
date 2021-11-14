@@ -20,12 +20,6 @@ import {
 } from 'react-router-dom'
 import 'tailwindcss/tailwind.css'
 
-const TEST_QUERY = gql`
-  query {
-    hello
-  }
-`
-
 const POSTS_QUERY = gql`
   query {
     posts {
@@ -93,8 +87,7 @@ const PostPreview = ({ post }: PostPreviewProps) => {
 }
 
 const WritePostContainer = () => {
-  const [title, setTitle] = useState('')
-  const [body, setBody] = useState('')
+  const [local, setLocal] = useState({ title: '', body: '' })
 
   const params: { id?: string } = useParams()
 
@@ -104,16 +97,15 @@ const WritePostContainer = () => {
   >(POST_QUERY)
 
   useEffect(() => {
-    if (params.id && !title && !body) {
+    if (params.id && !local.title && !local.body) {
       getPost({ variables: { id: params.id } })
     }
-  }, [params.id, title, body])
+  }, [params.id, local])
 
   useEffect(() => {
     if (postQuery.data?.post) {
       const { post } = postQuery.data
-      setTitle(post.title)
-      setBody(post.body)
+      setLocal(post)
     }
   }, [postQuery])
 
@@ -122,8 +114,8 @@ const WritePostContainer = () => {
     {
       variables: {
         id: params.id,
-        title,
-        body,
+        title: local.title,
+        body: local.body,
       },
     },
   )
@@ -131,10 +123,10 @@ const WritePostContainer = () => {
   const debouncedUpdate = useCallback(debounce(update, 1000), [update])
 
   useEffect(() => {
-    if (title && body) {
+    if (local.title && local.body) {
       debouncedUpdate()
     }
-  }, [title, body])
+  }, [local])
 
   const navigate = useNavigate()
 
@@ -154,19 +146,23 @@ const WritePostContainer = () => {
         <input
           className="p-4 border-gray-400 border w-full text-xl"
           placeholder="Because I could not stop for Death..."
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          value={local.title}
+          onChange={(e) =>
+            setLocal((prev) => ({ ...prev, title: e.target.value }))
+          }
         />
         <textarea
           className="p-4 border-gray-400 border w-full h-96 text-xl"
           placeholder="He kindly stopped for me..."
-          value={body}
-          onChange={(e) => setBody(e.target.value)}
+          value={local.body}
+          onChange={(e) =>
+            setLocal((prev) => ({ ...prev, body: e.target.value }))
+          }
         ></textarea>
         <button
           className="py-2 px-4 bg-green-700 text-white text-sm rounded-full disabled:opacity-50 transition-opacity"
           onClick={onClickPublish}
-          disabled={!title.length || !body.length}
+          disabled={!local.title || !local.body}
         >
           Publish
         </button>
