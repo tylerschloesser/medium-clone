@@ -12,6 +12,7 @@ import {
   stringArg,
 } from 'nexus'
 import { nanoid } from 'nanoid'
+import { promises as fs } from 'fs'
 
 const Post = objectType({
   name: 'Post',
@@ -32,7 +33,32 @@ interface Post {
   image?: string
 }
 
-const db: Record<string, Post> = {}
+const db = {
+  async put(post: Post): Promise<Post> {
+    const current = JSON.parse(
+      await fs.readFile('db.json', { encoding: 'utf8' }),
+    )
+    await fs.writeFile(
+      'db.json',
+      JSON.stringify({ ...current, [post.id]: post }, null, 2),
+      { encoding: 'utf8' },
+    )
+    return post
+  },
+  async get(id: string): Promise<Post | null> {
+    const current = JSON.parse(
+      await fs.readFile('db.json', { encoding: 'utf8' }),
+    )
+    console.log(current, id, current[id])
+    return current[id] ?? null
+  },
+  async query(): Promise<Post[]> {
+    const current = <Record<string, Post>>(
+      JSON.parse(await fs.readFile('db.json', { encoding: 'utf8' }))
+    )
+    return Object.values(current)
+  },
+}
 
 // https://source.unsplash.com/random/200x150
 const TEST_POSTS = [
@@ -69,7 +95,7 @@ const Query = queryType({
           return TEST_POSTS
         }
         if (filter === 'Mine') {
-          return Object.values(db)
+          return db.query()
         }
         throw Error(`Invalid filter: ${filter}`)
       },
@@ -77,11 +103,12 @@ const Query = queryType({
     t.field('post', {
       type: Post,
       args: { id: stringArg() },
-      resolve: (_parent, { id }) => {
-        if (!db[id]) {
+      resolve: async (_parent, { id }) => {
+        const post = await db.get(id)
+        if (!post) {
           throw Error(`Invalid post ID: ${id}`)
         }
-        return db[id]
+        return post
       },
     })
   },
@@ -97,14 +124,14 @@ const PostMutation = extendType({
         title: stringArg(),
         body: stringArg(),
       },
-      resolve(_root, args) {
+      async resolve(_root, args) {
         let post = args
         if (!args.id) {
           post.id = nanoid()
-        } else if (!db[post.id]) {
+        } else if (!(await db.get(post.id))) {
           throw Error(`Invalid post ID: ${post.id}`)
         }
-        db[post.id] = post
+        db.put(post)
         return post
       },
     })
