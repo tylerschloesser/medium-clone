@@ -3,6 +3,7 @@ import {
   ApolloProvider,
   gql,
   InMemoryCache,
+  useLazyQuery,
   useMutation,
   useQuery,
 } from '@apollo/client'
@@ -32,6 +33,16 @@ const POSTS_QUERY = gql`
       title
       author
       image
+    }
+  }
+`
+
+const POST_QUERY = gql`
+  query ($id: String) {
+    post(id: $id) {
+      id
+      title
+      body
     }
   }
 `
@@ -86,6 +97,25 @@ const WritePostContainer = () => {
   const [body, setBody] = useState('')
 
   const params: { id?: string } = useParams()
+
+  const [getPost, postQuery] = useLazyQuery<
+    { post: { title: string; body: string } },
+    { id: string }
+  >(POST_QUERY)
+
+  useEffect(() => {
+    if (params.id && !title && !body) {
+      getPost({ variables: { id: params.id } })
+    }
+  }, [params.id, title, body])
+
+  useEffect(() => {
+    if (postQuery.data?.post) {
+      const { post } = postQuery.data
+      setTitle(post.title)
+      setBody(post.body)
+    }
+  }, [postQuery])
 
   const [update, { data }] = useMutation<{ update: { id: string } }>(
     UPDATE_POST_MUTATION,
