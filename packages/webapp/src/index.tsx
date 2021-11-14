@@ -32,7 +32,7 @@ const GET_POST_PREVIEWS_QUERY = gql`
 `
 
 const POST_QUERY = gql`
-  query ($id: String) {
+  query GetPost($id: String) {
     post(id: $id) {
       id
       title
@@ -42,9 +42,11 @@ const POST_QUERY = gql`
 `
 
 const UPDATE_POST_MUTATION = gql`
-  mutation ($id: String, $title: String, $body: String) {
+  mutation UpdatePost($id: String, $title: String, $body: String) {
     update(id: $id, title: $title, body: $body) {
       id
+      title
+      body
     }
   }
 `
@@ -87,7 +89,7 @@ const PostPreview = ({ post }: PostPreviewProps) => {
 }
 
 const WritePostContainer = () => {
-  const [local, setLocal] = useState({ title: '', body: '' })
+  const [local, setLocal] = useState({ dirty: false, title: '', body: '' })
 
   const params: { id?: string } = useParams()
 
@@ -105,7 +107,10 @@ const WritePostContainer = () => {
   useEffect(() => {
     if (postQuery.data?.post) {
       const { post } = postQuery.data
-      setLocal(post)
+      setLocal({
+        dirty: false,
+        ...post,
+      })
     }
   }, [postQuery])
 
@@ -148,7 +153,11 @@ const WritePostContainer = () => {
           placeholder="Because I could not stop for Death..."
           value={local.title}
           onChange={(e) =>
-            setLocal((prev) => ({ ...prev, title: e.target.value }))
+            setLocal((prev) => ({
+              ...prev,
+              title: e.target.value,
+              dirty: true,
+            }))
           }
         />
         <textarea
@@ -156,7 +165,7 @@ const WritePostContainer = () => {
           placeholder="He kindly stopped for me..."
           value={local.body}
           onChange={(e) =>
-            setLocal((prev) => ({ ...prev, body: e.target.value }))
+            setLocal((prev) => ({ ...prev, body: e.target.value, dirty: true }))
           }
         ></textarea>
         <button
