@@ -59,6 +59,16 @@ const Query = queryType({
       type: list(Post),
       resolve: () => TEST_POSTS,
     })
+    t.field('post', {
+      type: Post,
+      args: { id: stringArg() },
+      resolve: (_parent, { id }) => {
+        if (!db[id]) {
+          throw Error(`Invalid post ID: ${id}`)
+        }
+        return db[id]
+      },
+    })
   },
 })
 
@@ -76,6 +86,8 @@ const PostMutation = extendType({
         let post = args
         if (!args.id) {
           post.id = nanoid()
+        } else if (!db[post.id]) {
+          throw Error(`Invalid post ID: ${post.id}`)
         }
         db[post.id] = post
         return post

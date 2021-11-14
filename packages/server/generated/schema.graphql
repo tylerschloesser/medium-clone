@@ -16,5 +16,6 @@ type Post {
 
 type Query {
   hello(name: String): String
+  post(id: String): Post
   posts: [Post]
 }
