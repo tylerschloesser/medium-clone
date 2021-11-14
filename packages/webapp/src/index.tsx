@@ -6,9 +6,15 @@ import {
   useMutation,
   useQuery,
 } from '@apollo/client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  Routes,
+  useNavigate,
+} from 'react-router-dom'
 import 'tailwindcss/tailwind.css'
 
 const TEST_QUERY = gql`
@@ -50,11 +56,11 @@ const client = new ApolloClient({
 
 const root = document.getElementById('root')!
 
-interface PostContainerProps {
+interface PostPreviewProps {
   post: Post
 }
 
-const PostContainer = ({ post }: PostContainerProps) => {
+const PostPreview = ({ post }: PostPreviewProps) => {
   return (
     <Link to={`/post/${post.id}`} className="flex justify-between">
       <div className="flex flex-col">
@@ -74,6 +80,7 @@ const PostContainer = ({ post }: PostContainerProps) => {
 }
 
 const NewPostContainer = () => {
+  const [id, setId] = useState<string | null>(null)
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
 
@@ -83,6 +90,14 @@ const NewPostContainer = () => {
       body,
     },
   })
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (data?.update.id) {
+      navigate(`/post/${data.update.id}`, { replace: true })
+    }
+  }, [data?.update.id])
 
   const onClickPublish = () => {
     mutate()
@@ -122,7 +137,7 @@ const PostsContainer = () => {
       {data &&
         data.posts.map((post, i) => (
           <div key={post.id} className={i !== 0 ? 'mt-8' : ''}>
-            <PostContainer post={post} />
+            <PostPreview post={post} />
           </div>
         ))}
       <div className="mt-8 p-4 text-center rounded-md bg-gray-200">
@@ -131,7 +146,7 @@ const PostsContainer = () => {
           : `Let your imagination run wild.`}{' '}
         <Link
           className="ml-2 py-2 px-4 bg-black text-white text-sm rounded-full"
-          to="/post/new"
+          to="/post"
         >
           Write something
         </Link>
@@ -164,7 +179,7 @@ ReactDom.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/post/new" element={<NewPostContainer />} />
+          <Route path="/post" element={<NewPostContainer />} />
           <Route path="/post/:id" element={<Home />} />
         </Routes>
       </BrowserRouter>
