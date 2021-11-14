@@ -114,6 +114,8 @@ const WritePostContainer = () => {
     {
       variables: {
         id: params.id,
+        title: local.title,
+        body: local.body,
       },
     },
   )
@@ -122,12 +124,7 @@ const WritePostContainer = () => {
 
   useEffect(() => {
     if (local.title && local.body) {
-      debouncedUpdate({
-        variables: {
-          title: local.title,
-          body: local.body,
-        },
-      })
+      debouncedUpdate()
     }
   }, [local])
 
