@@ -22,6 +22,16 @@ const Post = objectType({
   },
 })
 
+interface Post {
+  id: string
+  title: string
+  body: string
+  author?: string
+  image?: string
+}
+
+const db: Record<string, Post> = {}
+
 // https://source.unsplash.com/random/200x150
 const TEST_POSTS = [
   {
@@ -62,7 +72,11 @@ const PostMutation = extendType({
         body: stringArg(),
       },
       resolve(_root, args) {
-        console.log('TODO save', args)
+        if (args.id) {
+          db[args.id] = args
+        } else {
+          console.log('TODO generate id')
+        }
         return args
       },
     })
