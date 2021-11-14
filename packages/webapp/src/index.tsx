@@ -171,7 +171,7 @@ const WritePostContainer = () => {
   )
 }
 
-const PostsContainer = () => {
+const HomePostPreviewsContainer = () => {
   const { data } = useQuery<{ posts: Post[] }>(GET_POST_PREVIEWS_QUERY, {
     variables: { filter: 'Home' },
   })
@@ -198,17 +198,39 @@ const PostsContainer = () => {
   )
 }
 
+const MyPostPreviewsContainer = () => {
+  const { data } = useQuery<{ posts: Post[] }>(GET_POST_PREVIEWS_QUERY, {
+    variables: { filter: 'Mine' },
+  })
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="uppercase">Your Posts</div>
+      {data &&
+        data.posts.map((post, i) => (
+          <div key={post.id}>
+            <Link className="text-blue-500" to={`/write/${post.id}`}>
+              {post.id}
+            </Link>
+          </div>
+        ))}
+    </div>
+  )
+}
+
 const Home = () => {
   return (
     <div className="container mx-auto p-4 sm:p-8">
       <div className="flex">
         <div className="flex-2">
-          <PostsContainer />
+          <HomePostPreviewsContainer />
         </div>
         <div className="flex-1 hidden md:block md:ml-8">
-          <div className="p-6 rounded-md bg-blue-200">
-            <div className="font-light uppercase text-sm">Hey There 👋</div>
-            <div className="mt-4">Welcome to my medium clone!</div>
+          <div className="flex flex-col gap-4">
+            <div className="p-6 rounded-md bg-blue-200">
+              <div className="font-light uppercase text-sm">Hey There 👋</div>
+              <div className="mt-4">Welcome to my medium clone!</div>
+            </div>
+            <MyPostPreviewsContainer />
           </div>
         </div>
       </div>
