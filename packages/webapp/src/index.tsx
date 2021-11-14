@@ -146,7 +146,7 @@ const WritePostContainer = () => {
   }
 
   return (
-    <div className="container mx-auto p-4 sm:p-8">
+    <div className={`container mx-auto p-4 sm:p-8`}>
       <div className="flex flex-col gap-4 items-end">
         <input
           className="p-4 border-gray-400 border w-full text-xl"
