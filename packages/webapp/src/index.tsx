@@ -6,7 +6,8 @@ import {
   useMutation,
   useQuery,
 } from '@apollo/client'
-import React, { useEffect, useState } from 'react'
+import { debounce } from 'lodash'
+import React, { useCallback, useEffect, useState } from 'react'
 import ReactDom from 'react-dom'
 import {
   BrowserRouter,
@@ -97,9 +98,11 @@ const WritePostContainer = () => {
     },
   )
 
+  const debouncedUpdate = useCallback(debounce(update, 1000), [update])
+
   useEffect(() => {
     if (!params.id && title && body) {
-      update()
+      debouncedUpdate()
     }
   }, [params.id, title, body])
 
