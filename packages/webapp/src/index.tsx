@@ -21,8 +21,8 @@ import {
 import 'tailwindcss/tailwind.css'
 
 const POSTS_QUERY = gql`
-  query {
-    posts {
+  query GetPosts($filter: PostFilter) {
+    posts(filter: $filter) {
       id
       title
       author
@@ -172,7 +172,9 @@ const WritePostContainer = () => {
 }
 
 const PostsContainer = () => {
-  const { data } = useQuery<{ posts: Post[] }>(POSTS_QUERY)
+  const { data } = useQuery<{ posts: Post[] }>(POSTS_QUERY, {
+    variables: { filter: 'Home' },
+  })
   return (
     <div className="flex flex-col">
       {data &&

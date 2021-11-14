@@ -52,7 +52,7 @@ const TEST_POSTS = [
 
 const PostFilter = enumType({
   name: 'PostFilter',
-  members: ['Mine'],
+  members: ['Home', 'Mine'],
 })
 
 const Query = queryType({
@@ -65,10 +65,13 @@ const Query = queryType({
       type: list(Post),
       args: { filter: PostFilter },
       resolve: (_parent, { filter }) => {
+        if (filter === 'Home') {
+          return TEST_POSTS
+        }
         if (filter === 'Mine') {
           return Object.values(db)
         }
-        return TEST_POSTS
+        throw Error(`Invalid filter: ${filter}`)
       },
     })
     t.field('post', {

@@ -17,7 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
-  PostFilter: "Mine"
+  PostFilter: "Home" | "Mine"
 }
 
 export interface NexusGenScalars {

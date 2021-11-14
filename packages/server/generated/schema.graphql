@@ -15,6 +15,7 @@ type Post {
 }
 
 enum PostFilter {
+  Home
   Mine
 }
 
