@@ -3,6 +3,7 @@ import {
   ApolloProvider,
   gql,
   InMemoryCache,
+  useMutation,
   useQuery,
 } from '@apollo/client'
 import React, { useState } from 'react'
@@ -23,6 +24,16 @@ const POSTS_QUERY = gql`
       title
       author
       image
+    }
+  }
+`
+
+const UPDATE_POST_MUTATION = gql`
+  mutation ($id: String, $title: String, $body: String) {
+    update(id: $id, title: $title, body: $body) {
+      id
+      title
+      body
     }
   }
 `
@@ -67,8 +78,16 @@ const PostContainer = ({ post }: PostContainerProps) => {
 const NewPostContainer = () => {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
+
+  const [mutate, { data, loading }] = useMutation(UPDATE_POST_MUTATION, {
+    variables: {
+      title,
+      body,
+    },
+  })
+
   const onClickPublish = () => {
-    console.log('todo')
+    mutate()
   }
 
   return (
