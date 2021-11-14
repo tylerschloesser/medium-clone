@@ -101,10 +101,10 @@ const WritePostContainer = () => {
   const debouncedUpdate = useCallback(debounce(update, 1000), [update])
 
   useEffect(() => {
-    if (!params.id && title && body) {
+    if (title && body) {
       debouncedUpdate()
     }
-  }, [params.id, title, body])
+  }, [title, body])
 
   const navigate = useNavigate()
 
@@ -122,13 +122,13 @@ const WritePostContainer = () => {
     <div className="container mx-auto p-4 sm:p-8">
       <div className="flex flex-col gap-4 items-end">
         <input
-          className="p-4 border-gray-400 border w-full"
+          className="p-4 border-gray-400 border w-full text-xl"
           placeholder="Because I could not stop for Death..."
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <textarea
-          className="p-4 border-gray-400 border w-full h-96"
+          className="p-4 border-gray-400 border w-full h-96 text-xl"
           placeholder="He kindly stopped for me..."
           value={body}
           onChange={(e) => setBody(e.target.value)}
