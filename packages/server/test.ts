@@ -1,13 +1,22 @@
 import cors from 'cors'
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
-import { list, makeSchema, objectType, queryType, stringArg } from 'nexus'
+import {
+  extendType,
+  list,
+  makeSchema,
+  mutationType,
+  objectType,
+  queryType,
+  stringArg,
+} from 'nexus'
 
 const Post = objectType({
   name: 'Post',
   definition(t) {
     t.id('id')
     t.string('title')
+    t.string('body')
     t.string('author')
     t.string('image')
   },
@@ -42,8 +51,26 @@ const Query = queryType({
   },
 })
 
+const PostMutation = extendType({
+  type: 'Mutation',
+  definition(t) {
+    t.nonNull.field('update', {
+      type: 'Post',
+      args: {
+        id: stringArg(),
+        title: stringArg(),
+        body: stringArg(),
+      },
+      resolve(_root, args) {
+        console.log('TODO save', args)
+        return args
+      },
+    })
+  },
+})
+
 const schema = makeSchema({
-  types: [Query],
+  types: [Query, PostMutation],
   outputs: {
     schema: __dirname + '/generated/schema.graphql',
     typegen: __dirname + '/generated/typings.ts',

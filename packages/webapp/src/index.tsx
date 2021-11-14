@@ -66,7 +66,7 @@ const PostContainer = ({ post }: PostContainerProps) => {
 
 const NewPostContainer = () => {
   const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+  const [body, setBody] = useState('')
   const onClickPublish = () => {
     console.log('todo')
   }
@@ -83,8 +83,8 @@ const NewPostContainer = () => {
         <textarea
           className="p-4 border-gray-400 border w-full h-96"
           placeholder="He kindly stopped for me..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
         ></textarea>
         <button
           className="py-2 px-4 bg-green-700 text-white text-sm rounded-full"

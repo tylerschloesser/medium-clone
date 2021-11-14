@@ -28,8 +28,10 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
+  Mutation: {};
   Post: { // root type
     author?: string | null; // String
+    body?: string | null; // String
     id?: string | null; // ID
     image?: string | null; // String
     title?: string | null; // String
@@ -48,8 +50,12 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
+  Mutation: { // field return type
+    update: NexusGenRootTypes['Post']; // Post!
+  }
   Post: { // field return type
     author: string | null; // String
+    body: string | null; // String
     id: string | null; // ID
     image: string | null; // String
     title: string | null; // String
@@ -61,8 +67,12 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenFieldTypeNames {
+  Mutation: { // field return type name
+    update: 'Post'
+  }
   Post: { // field return type name
     author: 'String'
+    body: 'String'
     id: 'ID'
     image: 'String'
     title: 'String'
@@ -74,6 +84,13 @@ export interface NexusGenFieldTypeNames {
 }
 
 export interface NexusGenArgTypes {
+  Mutation: {
+    update: { // args
+      body?: string | null; // String
+      id?: string | null; // String
+      title?: string | null; // String
+    }
+  }
   Query: {
     hello: { // args
       name?: string | null; // String
