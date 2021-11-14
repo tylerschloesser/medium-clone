@@ -109,10 +109,10 @@ const WritePostContainer = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (data?.update.id) {
+    if (!params.id && data?.update.id) {
       navigate(`/write/${data.update.id}`, { replace: true })
     }
-  }, [data?.update.id])
+  }, [params.id, data?.update.id])
 
   const onClickPublish = () => {
     update()
