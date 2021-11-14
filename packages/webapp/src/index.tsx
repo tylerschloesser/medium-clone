@@ -64,6 +64,10 @@ const PostContainer = ({ post }: PostContainerProps) => {
   )
 }
 
+const NewPostContainer = () => {
+  return <textarea></textarea>
+}
+
 const PostsContainer = () => {
   const { data } = useQuery<{ posts: Post[] }>(POSTS_QUERY)
   return (
@@ -78,9 +82,12 @@ const PostsContainer = () => {
         {Math.random() > 0.5
           ? `You've got ideas, set them free.`
           : `Let your imagination run wild.`}{' '}
-        <button className="ml-2 py-2 px-4 bg-black text-white text-sm rounded-full">
+        <Link
+          className="ml-2 py-2 px-4 bg-black text-white text-sm rounded-full"
+          to="/post/new"
+        >
           Write something
-        </button>
+        </Link>
       </div>
     </div>
   )
@@ -110,6 +117,7 @@ ReactDom.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />} />
+          <Route path="/post/new" element={<NewPostContainer />} />
           <Route path="/post/:id" element={<App />} />
         </Routes>
       </BrowserRouter>
