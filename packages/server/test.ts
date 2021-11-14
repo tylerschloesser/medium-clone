@@ -10,6 +10,7 @@ import {
   queryType,
   stringArg,
 } from 'nexus'
+import { nanoid } from 'nanoid'
 
 const Post = objectType({
   name: 'Post',
@@ -72,12 +73,12 @@ const PostMutation = extendType({
         body: stringArg(),
       },
       resolve(_root, args) {
-        if (args.id) {
-          db[args.id] = args
-        } else {
-          console.log('TODO generate id')
+        let post = args
+        if (!args.id) {
+          post.id = nanoid()
         }
-        return args
+        db[post.id] = post
+        return post
       },
     })
   },
