@@ -104,8 +104,9 @@ const NewPostContainer = () => {
           onChange={(e) => setBody(e.target.value)}
         ></textarea>
         <button
-          className="py-2 px-4 bg-green-700 text-white text-sm rounded-full"
+          className="py-2 px-4 bg-green-700 text-white text-sm rounded-full disabled:opacity-50 transition-opacity"
           onClick={onClickPublish}
+          disabled={!title.length || !body.length}
         >
           Publish
         </button>
