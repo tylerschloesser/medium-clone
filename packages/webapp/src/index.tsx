@@ -20,8 +20,8 @@ import {
 } from 'react-router-dom'
 import 'tailwindcss/tailwind.css'
 
-const POSTS_QUERY = gql`
-  query GetPosts($filter: PostFilter) {
+const GET_POST_PREVIEWS_QUERY = gql`
+  query GetPostPreviews($filter: PostFilter) {
     posts(filter: $filter) {
       id
       title
@@ -172,7 +172,7 @@ const WritePostContainer = () => {
 }
 
 const PostsContainer = () => {
-  const { data } = useQuery<{ posts: Post[] }>(POSTS_QUERY, {
+  const { data } = useQuery<{ posts: Post[] }>(GET_POST_PREVIEWS_QUERY, {
     variables: { filter: 'Home' },
   })
   return (
