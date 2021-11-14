@@ -14,6 +14,7 @@ import {
   Route,
   Routes,
   useNavigate,
+  useParams,
 } from 'react-router-dom'
 import 'tailwindcss/tailwind.css'
 
@@ -79,28 +80,33 @@ const PostPreview = ({ post }: PostPreviewProps) => {
   )
 }
 
-const NewPostContainer = () => {
-  const [id, setId] = useState<string | null>(null)
+const WritePostContainer = () => {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
 
-  const [mutate, { data, loading }] = useMutation(UPDATE_POST_MUTATION, {
-    variables: {
-      title,
-      body,
+  const params: { id?: string } = useParams()
+
+  const [update, { data }] = useMutation<{ update: { id: string } }>(
+    UPDATE_POST_MUTATION,
+    {
+      variables: {
+        id: params.id,
+        title,
+        body,
+      },
     },
-  })
+  )
 
   const navigate = useNavigate()
 
   useEffect(() => {
     if (data?.update.id) {
-      navigate(`/post/${data.update.id}`, { replace: true })
+      navigate(`/write/${data.update.id}`, { replace: true })
     }
   }, [data?.update.id])
 
   const onClickPublish = () => {
-    mutate()
+    update()
   }
 
   return (
@@ -146,7 +152,7 @@ const PostsContainer = () => {
           : `Let your imagination run wild.`}{' '}
         <Link
           className="ml-2 py-2 px-4 bg-black text-white text-sm rounded-full"
-          to="/post"
+          to="/write"
         >
           Write something
         </Link>
@@ -179,8 +185,9 @@ ReactDom.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/post" element={<NewPostContainer />} />
           <Route path="/post/:id" element={<Home />} />
+          <Route path="/write" element={<WritePostContainer />} />
+          <Route path="/write/:id" element={<WritePostContainer />} />
         </Routes>
       </BrowserRouter>
     </ApolloProvider>
