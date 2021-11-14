@@ -125,7 +125,7 @@ const WritePostContainer = () => {
     },
   )
 
-  const debouncedUpdate = useCallback(debounce(update, 1000), [update])
+  const debouncedUpdate = useCallback(debounce(update, 500), [update])
 
   useEffect(() => {
     if (local.title && local.body) {
