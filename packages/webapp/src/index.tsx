@@ -5,7 +5,7 @@ import {
   InMemoryCache,
   useQuery,
 } from '@apollo/client'
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDom from 'react-dom'
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom'
 import 'tailwindcss/tailwind.css'
@@ -65,18 +65,31 @@ const PostContainer = ({ post }: PostContainerProps) => {
 }
 
 const NewPostContainer = () => {
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const onClickPublish = () => {
+    console.log('todo')
+  }
+
   return (
     <div className="container mx-auto p-4 sm:p-8">
       <div className="flex flex-col gap-4 items-end">
         <input
           className="p-4 border-gray-400 border w-full"
           placeholder="Because I could not stop for Death..."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <textarea
           className="p-4 border-gray-400 border w-full h-96"
           placeholder="He kindly stopped for me..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
         ></textarea>
-        <button className="py-2 px-4 bg-green-700 text-white text-sm rounded-full">
+        <button
+          className="py-2 px-4 bg-green-700 text-white text-sm rounded-full"
+          onClick={onClickPublish}
+        >
           Publish
         </button>
       </div>
