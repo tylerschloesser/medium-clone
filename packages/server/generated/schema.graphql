@@ -14,8 +14,12 @@ type Post {
   title: String
 }
 
+enum PostFilter {
+  Mine
+}
+
 type Query {
   hello(name: String): String
   post(id: String): Post
-  posts: [Post]
+  posts(filter: PostFilter): [Post]
 }

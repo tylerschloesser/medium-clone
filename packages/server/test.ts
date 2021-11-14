@@ -2,6 +2,7 @@ import cors from 'cors'
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
 import {
+  enumType,
   extendType,
   list,
   makeSchema,
@@ -49,6 +50,11 @@ const TEST_POSTS = [
   },
 ].map((p, i) => ({ id: `test-${i}`, ...p }))
 
+const PostFilter = enumType({
+  name: 'PostFilter',
+  members: ['Mine'],
+})
+
 const Query = queryType({
   definition(t) {
     t.string('hello', {
@@ -57,7 +63,13 @@ const Query = queryType({
     })
     t.field('posts', {
       type: list(Post),
-      resolve: () => TEST_POSTS,
+      args: { filter: PostFilter },
+      resolve: (_parent, { filter }) => {
+        if (filter === 'Mine') {
+          return Object.values(db)
+        }
+        return TEST_POSTS
+      },
     })
     t.field('post', {
       type: Post,

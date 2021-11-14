@@ -17,6 +17,7 @@ export interface NexusGenInputs {
 }
 
 export interface NexusGenEnums {
+  PostFilter: "Mine"
 }
 
 export interface NexusGenScalars {
@@ -47,7 +48,7 @@ export interface NexusGenUnions {
 
 export type NexusGenRootTypes = NexusGenObjects
 
-export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
+export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars & NexusGenEnums
 
 export interface NexusGenFieldTypes {
   Mutation: { // field return type
@@ -100,6 +101,9 @@ export interface NexusGenArgTypes {
     post: { // args
       id?: string | null; // String
     }
+    posts: { // args
+      filter?: NexusGenEnums['PostFilter'] | null; // PostFilter
+    }
   }
 }
 
@@ -113,7 +117,7 @@ export type NexusGenObjectNames = keyof NexusGenObjects;
 
 export type NexusGenInputNames = never;
 
-export type NexusGenEnumNames = never;
+export type NexusGenEnumNames = keyof NexusGenEnums;
 
 export type NexusGenInterfaceNames = never;
 
