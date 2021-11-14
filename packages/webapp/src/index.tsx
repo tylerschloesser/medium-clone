@@ -32,8 +32,6 @@ const UPDATE_POST_MUTATION = gql`
   mutation ($id: String, $title: String, $body: String) {
     update(id: $id, title: $title, body: $body) {
       id
-      title
-      body
     }
   }
 `
