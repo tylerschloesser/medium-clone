@@ -97,6 +97,12 @@ const WritePostContainer = () => {
     },
   )
 
+  useEffect(() => {
+    if (!params.id && title && body) {
+      update()
+    }
+  }, [params.id, title, body])
+
   const navigate = useNavigate()
 
   useEffect(() => {
