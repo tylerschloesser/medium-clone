@@ -100,15 +100,22 @@ const PostMutation = extendType({
           ownerId: 'tyler',
         }
         if (!post.id) {
-          post.id = nanoid()
-          await context.prisma.post.create({ data: <Post>post })
+          const postId = nanoid()
+          const data = {
+            ...post,
+            id: postId,
+          }
+          return context.prisma.post.create({ data })
         } else {
-          await context.prisma.post.update({
-            where: { id: post.id },
-            data: <Post>post,
+          const data = {
+            ...post,
+            id: post.id,
+          }
+          return await context.prisma.post.update({
+            where: { id: data.id },
+            data,
           })
         }
-        return post
       },
     })
   },
