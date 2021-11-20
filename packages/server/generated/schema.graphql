@@ -3,7 +3,7 @@
 
 
 type Mutation {
-  update(body: String!, id: String, title: String!): Post!
+  update(body: String!, id: String, image: String, title: String!): Post!
 }
 
 type Post {

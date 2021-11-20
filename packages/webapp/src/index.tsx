@@ -37,14 +37,21 @@ const POST_QUERY = gql`
       id
       title
       body
+      image
     }
   }
 `
 
 const UPDATE_POST_MUTATION = gql`
-  mutation UpdatePost($id: String, $title: String!, $body: String!) {
-    update(id: $id, title: $title, body: $body) {
+  mutation UpdatePost(
+    $id: String
+    $image: String
+    $title: String!
+    $body: String!
+  ) {
+    update(id: $id, image: $image, title: $title, body: $body) {
       id
+      image
       title
       body
     }
@@ -89,12 +96,17 @@ const PostPreview = ({ post }: PostPreviewProps) => {
 }
 
 const WritePostContainer = () => {
-  const [local, setLocal] = useState({ dirty: false, title: '', body: '' })
+  const [local, setLocal] = useState({
+    dirty: false,
+    title: '',
+    body: '',
+    image: '',
+  })
 
   const params: { id?: string } = useParams()
 
   const [getPost, postQuery] = useLazyQuery<
-    { post: { title: string; body: string } },
+    { post: { title: string; body: string; image: string } },
     { id: string }
   >(POST_QUERY)
 
@@ -121,6 +133,7 @@ const WritePostContainer = () => {
         id: params.id,
         title: local.title,
         body: local.body,
+        image: local.image,
       },
     },
   )
@@ -168,6 +181,18 @@ const WritePostContainer = () => {
             setLocal((prev) => ({ ...prev, body: e.target.value, dirty: true }))
           }
         ></textarea>
+        <input
+          className="p-4 border-gray-400 border w-full text-xl"
+          placeholder="Image?"
+          value={local.image}
+          onChange={(e) =>
+            setLocal((prev) => ({
+              ...prev,
+              image: e.target.value,
+              dirty: true,
+            }))
+          }
+        />
         <button
           className="py-2 px-4 bg-green-700 text-white text-sm rounded-full disabled:opacity-50 transition-opacity"
           onClick={onClickPublish}

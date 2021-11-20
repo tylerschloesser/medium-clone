@@ -91,12 +91,12 @@ const PostMutation = extendType({
         id: stringArg(),
         title: nonNull(stringArg()),
         body: nonNull(stringArg()),
+        image: stringArg(),
       },
       async resolve(_root, args, context) {
         let post = {
           ...args,
           author: 'Tyler Schloesser',
-          image: 'todo',
           ownerId: 'tyler',
         }
         if (!post.id) {

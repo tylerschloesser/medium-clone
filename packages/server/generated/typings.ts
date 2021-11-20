@@ -91,6 +91,7 @@ export interface NexusGenArgTypes {
     update: { // args
       body: string; // String!
       id?: string | null; // String
+      image?: string | null; // String
       title: string; // String!
     }
   }
