@@ -7,12 +7,14 @@ import {
   list,
   makeSchema,
   mutationType,
+  nonNull,
   objectType,
   queryType,
   stringArg,
 } from 'nexus'
 import { nanoid } from 'nanoid'
 import { promises as fs } from 'fs'
+import { PrismaClient } from '@prisma/client'
 
 const Post = objectType({
   name: 'Post',
@@ -102,11 +104,11 @@ const Query = queryType({
     })
     t.field('post', {
       type: Post,
-      args: { id: stringArg() },
-      resolve: async (_parent, { id }) => {
-        const post = await db.get(id)
+      args: { id: nonNull(stringArg()) },
+      resolve: async (_parent, args) => {
+        const post = await db.get(args.id!)
         if (!post) {
-          throw Error(`Invalid post ID: ${id}`)
+          throw Error(`Invalid post ID: ${args.id}`)
         }
         return post
       },
@@ -121,17 +123,17 @@ const PostMutation = extendType({
       type: 'Post',
       args: {
         id: stringArg(),
-        title: stringArg(),
-        body: stringArg(),
+        title: nonNull(stringArg()),
+        body: nonNull(stringArg()),
       },
       async resolve(_root, args) {
         let post = args
-        if (!args.id) {
+        if (!post.id) {
           post.id = nanoid()
         } else if (!(await db.get(post.id))) {
           throw Error(`Invalid post ID: ${post.id}`)
         }
-        db.put(post)
+        db.put(<Post>post)
         return post
       },
     })
