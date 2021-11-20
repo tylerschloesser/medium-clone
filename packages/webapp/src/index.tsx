@@ -32,7 +32,7 @@ const GET_POST_PREVIEWS_QUERY = gql`
 `
 
 const POST_QUERY = gql`
-  query GetPost($id: String) {
+  query GetPost($id: String!) {
     post(id: $id) {
       id
       title

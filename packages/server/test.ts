@@ -1,21 +1,19 @@
-import path from 'path'
+import { PrismaClient } from '@prisma/client'
 import cors from 'cors'
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
+import { nanoid } from 'nanoid'
 import {
   enumType,
   extendType,
   list,
   makeSchema,
-  mutationType,
   nonNull,
   objectType,
   queryType,
   stringArg,
 } from 'nexus'
-import { nanoid } from 'nanoid'
-import { promises as fs } from 'fs'
-import { PrismaClient } from '@prisma/client'
+import path from 'path'
 import { Context } from './context'
 
 const Post = objectType({
@@ -35,33 +33,6 @@ interface Post {
   body: string
   author?: string
   image?: string
-}
-
-const db = {
-  async put(post: Post): Promise<Post> {
-    const current = JSON.parse(
-      await fs.readFile('db.json', { encoding: 'utf8' }),
-    )
-    await fs.writeFile(
-      'db.json',
-      JSON.stringify({ ...current, [post.id]: post }, null, 2),
-      { encoding: 'utf8' },
-    )
-    return post
-  },
-  async get(id: string): Promise<Post | null> {
-    const current = JSON.parse(
-      await fs.readFile('db.json', { encoding: 'utf8' }),
-    )
-    console.log(current, id, current[id])
-    return current[id] ?? null
-  },
-  async query(): Promise<Post[]> {
-    const current = <Record<string, Post>>(
-      JSON.parse(await fs.readFile('db.json', { encoding: 'utf8' }))
-    )
-    return Object.values(current)
-  },
 }
 
 // https://source.unsplash.com/random/200x150
@@ -98,8 +69,10 @@ const Query = queryType({
     t.field('post', {
       type: Post,
       args: { id: nonNull(stringArg()) },
-      resolve: async (_parent, args) => {
-        const post = await db.get(args.id!)
+      resolve: async (_parent, args, context) => {
+        const post = await context.prisma.post.findUnique({
+          where: { id: args.id },
+        })
         if (!post) {
           throw Error(`Invalid post ID: ${args.id}`)
         }
