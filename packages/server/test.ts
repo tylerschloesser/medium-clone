@@ -1,3 +1,4 @@
+import path from 'path'
 import cors from 'cors'
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
@@ -15,6 +16,7 @@ import {
 import { nanoid } from 'nanoid'
 import { promises as fs } from 'fs'
 import { PrismaClient } from '@prisma/client'
+import { Context } from './context'
 
 const Post = objectType({
   name: 'Post',
@@ -140,23 +142,35 @@ const PostMutation = extendType({
   },
 })
 
-const schema = makeSchema({
-  types: [Query, PostMutation],
-  outputs: {
-    schema: __dirname + '/generated/schema.graphql',
-    typegen: __dirname + '/generated/typings.ts',
-  },
-})
+async function main() {
+  const schema = makeSchema({
+    types: [Query, PostMutation],
+    outputs: {
+      schema: path.join(__dirname, '/generated/schema.graphql'),
+      typegen: path.join(__dirname, '/generated/typings.ts'),
+    },
+    contextType: {
+      module: path.join(__dirname, './context.ts'),
+      export: 'Context',
+    },
+  })
 
-const app = express()
-app.use(cors())
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    graphiql: true,
-  }),
-)
-app.listen(4000, () => {
-  console.log('graphql server listening')
-})
+  const prisma = new PrismaClient()
+  const context: Context = { prisma }
+
+  const app = express()
+  app.use(cors())
+  app.use(
+    '/graphql',
+    graphqlHTTP({
+      schema,
+      context,
+      graphiql: true,
+    }),
+  )
+  app.listen(4000, () => {
+    console.log('graphql server listening')
+  })
+}
+
+main()

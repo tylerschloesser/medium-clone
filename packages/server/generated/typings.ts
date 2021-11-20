@@ -4,7 +4,7 @@
  */
 
 
-
+import type { Context } from "./../context"
 
 
 
@@ -89,9 +89,9 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Mutation: {
     update: { // args
-      body?: string | null; // String
+      body: string; // String!
       id?: string | null; // String
-      title?: string | null; // String
+      title: string; // String!
     }
   }
   Query: {
@@ -99,7 +99,7 @@ export interface NexusGenArgTypes {
       name?: string | null; // String
     }
     post: { // args
-      id?: string | null; // String
+      id: string; // String!
     }
     posts: { // args
       filter?: NexusGenEnums['PostFilter'] | null; // PostFilter
@@ -138,7 +138,7 @@ export type NexusGenFeaturesConfig = {
 }
 
 export interface NexusGenTypes {
-  context: any;
+  context: Context;
   inputTypes: NexusGenInputs;
   rootTypes: NexusGenRootTypes;
   inputTypeShapes: NexusGenInputs & NexusGenEnums & NexusGenScalars;

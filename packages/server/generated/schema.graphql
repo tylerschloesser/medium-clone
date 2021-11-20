@@ -3,7 +3,7 @@
 
 
 type Mutation {
-  update(body: String, id: String, title: String): Post!
+  update(body: String!, id: String, title: String!): Post!
 }
 
 type Post {
@@ -21,6 +21,6 @@ enum PostFilter {
 
 type Query {
   hello(name: String): String
-  post(id: String): Post
+  post(id: String!): Post
   posts(filter: PostFilter): [Post]
 }
