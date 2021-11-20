@@ -272,9 +272,18 @@ const Home = () => {
   )
 }
 
+const Nav = () => (
+  <nav className="shadow-md">
+    <div className="container mx-auto px-4 sm:px-8 py-4 text-right">
+      <span className="font-light">Good morning, Tyler</span>
+    </div>
+  </nav>
+)
+
 ReactDom.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
+      <Nav />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
