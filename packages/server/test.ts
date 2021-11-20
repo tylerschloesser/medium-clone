@@ -114,14 +114,21 @@ const PostMutation = extendType({
         title: nonNull(stringArg()),
         body: nonNull(stringArg()),
       },
-      async resolve(_root, args) {
-        let post = args
+      async resolve(_root, args, context) {
+        let post = {
+          ...args,
+          author: 'Tyler Schloesser',
+          image: 'todo',
+        }
         if (!post.id) {
           post.id = nanoid()
-        } else if (!(await db.get(post.id))) {
-          throw Error(`Invalid post ID: ${post.id}`)
+          await context.prisma.post.create({ data: <Post>post })
+        } else {
+          await context.prisma.post.update({
+            where: { id: post.id },
+            data: <Post>post,
+          })
         }
-        db.put(<Post>post)
         return post
       },
     })

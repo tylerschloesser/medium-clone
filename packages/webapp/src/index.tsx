@@ -42,7 +42,7 @@ const POST_QUERY = gql`
 `
 
 const UPDATE_POST_MUTATION = gql`
-  mutation UpdatePost($id: String, $title: String, $body: String) {
+  mutation UpdatePost($id: String, $title: String!, $body: String!) {
     update(id: $id, title: $title, body: $body) {
       id
       title
