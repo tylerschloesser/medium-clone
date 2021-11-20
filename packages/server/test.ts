@@ -85,7 +85,12 @@ const Query = queryType({
           return context.prisma.post.findMany({ take: 10 })
         }
         if (filter === 'Mine') {
-          return db.query()
+          return context.prisma.post.findMany({
+            take: 10,
+            where: {
+              ownerId: { equals: 'tyler' },
+            },
+          })
         }
         throw Error(`Invalid filter: ${filter}`)
       },
@@ -119,6 +124,7 @@ const PostMutation = extendType({
           ...args,
           author: 'Tyler Schloesser',
           image: 'todo',
+          ownerId: 'tyler',
         }
         if (!post.id) {
           post.id = nanoid()

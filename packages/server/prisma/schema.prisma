@@ -16,4 +16,12 @@ model Post {
   body String
   author String?
   image String?
+
+  owner User @relation(fields: [ownerId], references: [id])
+  ownerId String
+}
+
+model User {
+  id String @id
+  posts Post[]
 }
